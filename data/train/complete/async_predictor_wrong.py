@@ -44,12 +44,7 @@ class AsycnActionPredictor:
             """
             # Build the video model and print model statistics.
             model = Predictor(self.cfg, gpu_id=self.gpu_id)
-            while True:
-                task = self.task_queue.get()
-                if isinstance(task, _StopToken):
-                    break
-                task = model(task)
-                self.result_queue.put(task)
+            # Complete
 
     def __init__(self, cfg, result_queue=None):
         num_workers = cfg.NUM_GPUS
@@ -90,18 +85,7 @@ class AsycnActionPredictor:
         Return a task object in the correct order based on task id if
         result(s) is available. Otherwise, raise queue.Empty exception.
         """
-        if self.result_data.get(self.get_idx + 1) is not None:
-            self.get_idx += 1
-            res = self.result_data[self.get_idx]
-            del self.result_data[self.get_idx]
-            return res
-        while True:
-            res = self.result_queue.get(block=False)
-            idx = res.id
-            if idx == self.get_idx + 1:
-                self.get_idx += 1
-                return res
-            self.result_data[idx] = res
+       # Complete
 
     def __call__(self, task):
         self.put(task)
